@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  Keycloak_FPU_db:
+    container_name: db_fpu
+    image: postgres
+    ports:
+      - 7132:5432
+    environment:
+      - POSTGRES_USER=teste
+      - POSTGRES_PASSWORD=teste
+      - POSTGRES_DB=keycloak
+
+  keycloak_FPU:
+    image: quay.io/keycloak/keycloak:22.0
+    container_name: keycloak_fpu
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
+    ports:
+      - 8080:8080
+      - 8443:8443
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_PASSWORD=teste 
+      - KC_DB_USERNAME=teste
+      - KC_DB_URL=jdbc:postgresql://172.25.10.90:7132/keycloak
